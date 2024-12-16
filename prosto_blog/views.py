@@ -1,13 +1,37 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 
-def index(request):
-    if request.method == 'GET':
-        return HttpResponse('hi TUNES')
+from django.shortcuts import render, HttpResponse
+import datetime
+from django.views import generic
+from templates.models import models
 
-def emoji (request):
-    if request.method == 'GET':
-        return HttpResponse('🎄🏆 ')
 
-def image_proger_view(request):
-    return HttpResponse('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfl2CD8o7yQCJYk91VimvyGT0DJ8atwVtH-A&s')
+def about_me(request):
+    return render(request, 'main_page/about_me.html')
+
+
+
+def about_my_pet(request):
+    return HttpResponse(f"Its my cat - Murrr")
+
+
+
+def current_tima(request):
+    return HttpResponse(datetime.datetime.now())
+
+
+class BooklistView(generic.ListView):
+    template_name = 'main_page/book.html'
+    context_object_name = 'books'
+    model = models.Book
+
+    def get_queryset(self):
+        return models.Book.objects.all()
+
+
+class BookDetailView(generic.DetailView):
+    template_name = 'main_page/book_detail.html'
+    context_object_name = 'book'
+    model = models.Book
+
+    def get_queryset(self):
+        return models.Book.objects.all()
